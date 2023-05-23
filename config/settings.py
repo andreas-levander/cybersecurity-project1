@@ -38,7 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'message_board',
-    'home_page'
+    'message_board_v1'
 ]
 
 MIDDLEWARE = [

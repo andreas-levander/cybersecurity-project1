@@ -2,4 +2,4 @@ from django.apps import AppConfig
 
 
 class homePageConfig(AppConfig):
-    name = 'home_page'
+    name = 'message_board_v1'
