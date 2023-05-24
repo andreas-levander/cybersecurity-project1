@@ -21,5 +21,4 @@ from django.urls import path, include
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('v1/', include('message_board_v1.urls')),
-    path('v2/', include('message_board.urls')),
 ]

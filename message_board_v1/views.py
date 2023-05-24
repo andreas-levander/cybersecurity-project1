@@ -1,7 +1,9 @@
 from django.shortcuts import render,redirect
 from django.views.decorators.csrf import csrf_exempt
+from django.http import HttpResponse
 from message_board_v1.controllers import users
 from .models import Message_v1 as Message
+from .models import SelfUser
 
 
 def homePage(request):
@@ -25,19 +27,33 @@ def loginPage(request):
      return render(request, 'registration/login_v1.html', {'notif': notif})
 
 def messagePageView(request):
-	items = Message.objects.all().values_list('content', flat=True)
+    if request.session.get('user', '') == '':
+         return HttpResponse("Not authorized")
+	
+    items = Message.objects.all().values('content','user__username')
 
-	return render(request, 'pages/message_board.html', {'items' : items})
+    return render(request, 'pages/message_board.html', {'items' : items})
 
 @csrf_exempt
 def add(request):
+    # Fix to check that the user making the request is logged in
+    user = request.session.get('user', '')
+    # if user == '':
+    #      return HttpResponse("Not authorized")
+    
+    user_obj = SelfUser.objects.filter(username=user).first()
+
     message = request.POST.get('content')
-    new = Message(content=message)
+    new = Message(content=message, user=user_obj)
 
     new.save()
     return redirect('../')
 
 
 def clear(request):
+    # Fix to check that the user making the request is logged in
+    # if request.session.get('user', '') == '':
+    #      return HttpResponse("Not authorized")
+       
     Message.objects.all().delete()
     return redirect('../')

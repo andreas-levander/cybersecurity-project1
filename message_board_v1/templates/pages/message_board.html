@@ -9,7 +9,7 @@
 
         <ul>
             {% for item in items %}
-            <li>{{ item |safe}}</li>
+            <li>{{ item.content |safe}}  -- posted by: {{item.user__username}}</li>
             {% endfor %}
         </ul>
 
