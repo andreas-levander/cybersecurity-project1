@@ -1,4 +1,5 @@
-from message_board_v1.models import SelfUser
+from message_board_v1.models import SelfUser, Message_v1
+
 import bcrypt
 
 def bad_create_user(username, password):
@@ -36,3 +37,15 @@ def better_check_password(username, password):
              
     return False
    
+
+def bad_filter_messages(message):
+    query = f'%%{message}%%'
+    filtered = Message_v1.objects.raw("SELECT * FROM message_board_v1_message_v1 WHERE content LIKE '" + query + "'")
+
+    # Fixed the SQL Injection problem by using parameters instead
+    #filtered = Message_v1.objects.raw("SELECT * FROM message_board_v1_message_v1 WHERE content LIKE %s", [query])
+
+    result = []
+    for row in filtered:
+        result.append({"content": row.content, "user__username": row.user.username})
+    return result

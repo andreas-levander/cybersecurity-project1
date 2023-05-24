@@ -57,3 +57,12 @@ def clear(request):
        
     Message.objects.all().delete()
     return redirect('../')
+
+def filter_messages(request):
+    # Fix to check that the user making the request is logged in
+    # if request.session.get('user', '') == '':
+    #      return HttpResponse("Not authorized")
+
+    result = users.bad_filter_messages(request.POST.get('query'))
+
+    return render(request, 'pages/message_board.html', {'items' : result})

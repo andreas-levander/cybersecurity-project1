@@ -12,6 +12,16 @@
             <li>{{ item.content |safe}}  -- posted by: {{item.user__username}}</li>
             {% endfor %}
         </ul>
+        <h2>Filter Messages</h2>
+        <form action="{% url 'filter' %}" method="POST">
+            {% csrf_token %} 
+            Author:<input type="text" name="query"/>
+            <button type="submit" >filter</button>
+        </form>
+        <form action="{% url 'messages_v1' %}" method="GET">
+            <button type="submit" >reset filter</button>
+        </form>
+        
 
 
 
